@@ -1,0 +1,9 @@
+bigbluebutton_api_python
+jinja2
+marshmallow
+schema
+redis
+Flask
+flask-restful
+gevent
+pyyaml

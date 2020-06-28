@@ -1,0 +1,26 @@
+[Unit]
+Description=scheduLight Redis
+Requires=docker.service
+After=docker.service
+After=network-online.target
+Wants=network-online.target
+Before=scheduLight-commandProcessor.service scheduLight-mailProcessor.service scheduLight-meetingProcessor.service scheduLight-api.service
+Before=scheduLight.target
+PartOf=scheduLight.target
+
+[Service]
+Restart=always
+
+# Remove old containers, images and volumes
+ExecStartPre=/usr/local/bin/docker-compose -f /usr/local/bin/scheduLight/docker-compose.yml down -v
+ExecStartPre=/usr/local/bin/docker-compose -f /usr/local/bin/scheduLight/docker-compose.yml rm -v
+ExecStartPre=/usr/local/bin/docker-compose -f /usr/local/bin/scheduLight/docker-compose.yml pull
+
+# Compose up
+ExecStart=/usr/local/bin/docker-compose -f /usr/local/bin/scheduLight/docker-compose.yml up
+ExecStartPost=/usr/bin/timeout 20 sh -c 'while ! ss -t -l -n sport = :6380 | grep -q "^LISTEN.*:6380"; do sleep 1; done; sleep 2'
+# Compose down, remove containers and volumes
+ExecStop=/usr/local/bin/docker-compose -f /usr/local/bin/scheduLight/docker-compose.yml down -v
+
+[Install]
+WantedBy=scheduLight.target

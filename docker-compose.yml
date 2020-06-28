@@ -1,0 +1,11 @@
+version: "3.3"
+services:
+  redis:
+    container_name: scheduLightRedis
+    image: redis
+    environment:
+        - vm.overcommit_memory=1
+    ports:
+       - "6380:6379"
+    volumes:
+     - ./redisdata:/data

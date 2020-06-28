@@ -1,0 +1,79 @@
+Subject: {{ vars['mDict']['meetingName'] }}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <style type="text/css">
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+          color: #295266;
+          font-family: Bitter, serif;
+      }
+
+      h2,
+      h3 {
+          border-bottom: 1px solid #295266;
+          border-radius: 0px;
+          padding-bottom: 2px;
+      }
+
+      .section {
+          border-width: 1px;
+          border-style: solid;
+          border-color: #DEDFE0;
+          border-radius: 4px;
+          box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+          background: #FFFFFF url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAoCAYAAAA/tpB3AAAARklEQVR42o3EyRHAIAwAMfpvFswNNiaZzBYQPRRijDd8pZRIRCjnTKUUqrVSa4167zTGoDknrbVo702qSmZG5xxyd7qvHz12BJwxqsJtDwAAAABJRU5ErkJggg==') top left repeat-x;
+          padding: 28px;
+          padding-top: 10px;
+          margin: 10px;
+          margin-left: 0;
+
+      }
+          .sub{
+              margin-top: 20px;
+              color: #A9A9A9;
+
+          }
+          .sub a{
+              color: #A9A9A9;
+          }
+          .content{
+              margin-bottom: 10px;
+          }
+      .from{
+          margin-bottom: 10px;
+          color: #A9A9A9;
+      }
+
+  </style>
+
+</head>
+<body style="color: #333; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.429; font-family: Arial, sans-serif">
+
+<div class="section">
+<h2>Hallo {{ vars['mail_properties']['mailToName'] }},</h2>
+
+<p>Ihre Veranstaltung wurde erstellt.</p>
+<h2>&ldquo;<em>{{ vars['mDict']['meetingName'] }}</em>&rdquo;</h2>
+
+{% if vars['mDict']['startDate'] is defined  and vars['mDict']['startDate'] %}
+<h3>Datum</h3>
+<p><b>{{ vars['mDict']['startDate'] }} CEST (UTC+2)</b></p>
+{% endif %}
+
+<h3>Zugangsdaten</h3>
+
+<p>Sie können den Raum über folgenden Link betreten: <a href="{{ vars['meetingLink'] }}">{{ vars['meetingLink'] }}</a></p>
+
+<p><br/>Ihr ZID Team
+</p>
+
+</div>
+</body>
+</html>

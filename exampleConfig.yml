@@ -1,0 +1,117 @@
+# servers
+servers:
+  bbb:
+    BBB_SECRET: secret_of_the_server
+    BBB_URL: url_of_the_server
+    link_base: https://url_of_greenlight/b
+    send_emails: true|false # default is false - no mails will be send
+    mailDebug: true # to see mailcontents for debugging
+    mailFrom: sender_email_server_wide
+    mailFromName: name_to_show
+    mailTo: recipient_email_server_wide # overrides for debugging purposes
+    mailToName: name_to_show
+    mailPassword: password_of_smtp_server
+    mailServer: smtp_host
+    mailUser: smtp_user
+# meetings
+meetings:
+  unique_meeting_id:
+    id: ideally_the_same_id
+    server: server_to_use
+    meetingID: if_set_bbb_meeting_id # otherwise an unique one will be created
+    meetingName: Name_of_meeting
+    meetingUID: greenlight_short_url # optional if homeRoom is used otherwise required
+    useHomeRoom: true|false # use the homeRoom of the user as meeting room? otherwise a new room is created if it does not exist
+    owner:
+      email: email_of_meeting_owner
+      fullName: the _name
+      password: password_of_the_user # not implimented yet
+      uid: user_uid
+      socialUid: uid_for_ldap # if ldap is used (default!)
+    startDate: 2020-06-13 18:15 # date to start at
+    reminderMinutes: 5 # if set remind owner n minutes before meeting is staarted via mail
+    preOpenMinutes: 60 # if set the meeting will be opened automatically n minutes before the startDate
+    preStartMinutes: 30 # if set the meeting starts n minutes before startDate
+    endAfterMinutes: 50 # if set the meeting will be ended after n minutes
+    accessCode: only_set_if_you_want_an_access_code
+    muteOnStart: true|false #optional
+    record: true|false # set if you want to record a meeting
+    allowStartStopRecording: true|false #set_if_you_need_it
+    autoStartRecording: true|false # set_if_needed
+    bannerText: bbb_banner_text. e.g. this session starts at __startDate__ (date will be replaced if startDate is set)
+    welcome: welcome_message # can include __startDate__
+    duration: 60 #optional
+    logoutURL: url_to_be_redirected # without http://
+    maxParticipants: 150 # optional
+    liveStreaming:
+      streamerHost: host_with_liveStreaming_installed # use if you want to stream via rtmp - specify without http://
+      targetUrl: rtmp://media_server_url/stream/key # your streaming server url e.g. provided by youtube or facebook
+    sendInvitationLink:
+      email_to_invite:
+        fullName: name_of_recipient
+    sendModeratorLink: # send a direct moderator join link to the user
+      email_to_invite:
+        fullName: name_of_recipient
+        send_emails: true|false # overrides setting of meeting or server
+    shareWith:
+      email_to_share_room_with:
+        fullName: recipient_name
+        send_emails: true|false # overrides setting of meeting or server
+    meetingInvitationInfoTemplate: individual_mail_template_in_jinja2
+    meetingModeratorInfoTemplate: individual_mail_template_in_jinja2
+    meetingOwnerInfoTemplate: individual_mail_template_in_jinja2
+    meetingOwnerReminderTemplate: individual_mail_template_in_jinja2
+    meetingOwnerStartedTemplate: individual_mail_template_in_jinja2
+    meetingShareInfoTemplate: individual_mail_template_in_jinja2
+    mailFrom: sender_email_meeting_wide # if not set, the owner will be the sender
+    mailFromName: name_to_show
+    mailTo: recipient_email_meeting_wide # overrides all others for debugging purposes
+    mailToName: name_to_show
+    send_emails: true|false # send mails for this meeting? overrides server setting
+# commands
+commands:
+  rename_room_cmd_id:
+    command: rename_room
+    server: server_to_use
+    data:
+      old_roomUID:
+        roomUID: new_roomUID
+
+  share_or_unshare__room_cmd_id:
+    command: share_room|unshare_room
+    server: server_to_use
+    data:
+      roomUID:
+        email_to_share_to1: {}
+        email_to_share_to2: Name
+
+  delete_room_cmd_id:
+    command: delete_room
+    server: server_to_use
+    data:
+      roomUID: {}
+
+  create_room_cmd_id:
+    command: create_room
+    server: server_to_use
+    data:
+      room name:
+        email: owner email
+        roomUID: UID of the room
+        accessCode: code of the room
+
+  delete_user_cmd_id:
+    command: delete_user
+    server: server_to_use
+    data:
+      email: {}
+
+  create_user_cmd_id:
+    command: create_user
+    server: server_to_use
+    data:
+      email:
+        fullName: name of the user
+        pwd: password (not implimented yet)
+        role: role of the user (default = user)
+        provider: provider of the user (default = ldap)

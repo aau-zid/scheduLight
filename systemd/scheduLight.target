@@ -1,0 +1,4 @@
+[Unit]
+Description=scheduLight
+[Install]
+WantedBy=multi-user.target

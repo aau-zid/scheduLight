@@ -1,0 +1,12 @@
+[Unit]
+Description=scheduLight mailProcessor
+After=network-online.target
+After=scheduLight-redis.service
+Wants=scheduLight-redis.service
+Wants=network-online.target
+Requires=scheduLight-redis.service
+PartOf=scheduLight.target
+[Service]
+ExecStart=/usr/local/bin/scheduLight/slMailProcessor.py
+[Install]
+WantedBy=scheduLight.target

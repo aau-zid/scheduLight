@@ -1,0 +1,17 @@
+[Unit]
+Description=scheduLight API
+After=network-online.target
+After=scheduLight-redis.service
+Wants=scheduLight-redis.service
+Wants=network-online.target
+Requires=scheduLight-commandProcessor.service
+Requires=scheduLight-meetingProcessor.service
+Requires=scheduLight-mailProcessor.service
+Requires=scheduLight-redis.service
+PartOf=scheduLight.target
+[Service]
+ExecStart=/usr/local/bin/scheduLight/slApi.py
+[Install]
+WantedBy=scheduLight.target
+Alias=scheduLight.service
+Also=scheduLight-commandProcessor.service scheduLight-mailProcessor.service scheduLight-meetingProcessor.service scheduLight-redis.service
