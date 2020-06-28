@@ -1,0 +1,13 @@
+[Unit]
+Description=scheduLight commandProcessor
+After=network-online.target
+After=scheduLight-redis.service
+Wants=scheduLight-redis.service
+Wants=network-online.target
+Requires=scheduLight-mailProcessor.service
+Requires=scheduLight-redis.service
+PartOf=scheduLight.target
+[Service]
+ExecStart=/usr/local/bin/scheduLight/slCommandProcessor.py
+[Install]
+WantedBy=scheduLight.target
