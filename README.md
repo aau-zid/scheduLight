@@ -14,26 +14,28 @@ The application mainly features two modes:
 
 to install...
 *  please clone the repository to /user/local/bin:
-    git clone git@github.com:aau-zid/scheduLight.git /usr/local/bin/scheduLight
+        git clone https://github.com/aau-zid/scheduLight.git /usr/local/bin/scheduLight
 
 * install the python packages required... (you can use the shell script for ubuntu if you want)
-    /usr/local/bin/scheduLight/python_packages_setup.sh
+        /usr/local/bin/scheduLight/python_packages_setup.sh
 
-    apt -y install python3-pip
-    apt -y install python3-psycopg2
-    pip3 install -r /usr/local/bin/scheduLight/python_packages.txt
+        ```
+        apt -y install python3-pip
+        apt -y install python3-psycopg2
+        pip3 install -r /usr/local/bin/scheduLight/python_packages.txt
+        ```
 
 * install the systemd startup scripts...
-    /usr/local/bin/scheduLight/systemd/install.sh
+        /usr/local/bin/scheduLight/systemd/install.sh
 
 * configure the greenlight database 
-    set the database credentials in slCli.py, slCommandProcessor.py and slMeetingProcessor.py
+        set the database credentials in slCli.py, slCommandProcessor.py and slMeetingProcessor.py
 
 * start the processors...
-    systemctl start scheduLight
+        systemctl start scheduLight
 
 * to stopp...
-    systemctl stop scheduLight.target
+        systemctl stop scheduLight.target
 
 ### note on redis memory usage
 you may have a look at Redis guidances on why vm.overcommit_memory should be set to 1 for it.
@@ -67,7 +69,6 @@ You can execute cli commands via the slCli.py file.
 #### show running meetings on a server
 
 -m --show_meetings
-
 search for running meetings on a server.
 
 -s --server
@@ -77,13 +78,10 @@ Default is "bbb"
 #### show or send room links
 
 -l, --room_links 
-
 this command searches for rooms in greenlight and shows the owner, title, link to the room and a moderator link to access the room directly without a greenlight account required.
-
 default is to search for a name, but you can choose any column of the rooms database by specifying the following argument:
 
 -b, --room_by - a column field of the rooms table to search in
-
 you can send the output via email to any address by providing:
 
 -e, --email - emailaddress to send the report to.
@@ -94,6 +92,7 @@ the following commands can be triggered via the api or be configured in the yaml
 #### yaml file structure
 In the yaml file use the structure below for the various commands.
 
+```
 commands:
   rename_room_cmd_id:
     command: rename_room
@@ -141,6 +140,7 @@ commands:
         pwd: password (not implimented yet)
         role: role of the user (default = user)
         provider: provider of the user (default = ldap)
+```
 
 ### meetings from yaml file or api
 if you configure meetings, the application will create users and rooms required in greenlight, start the BigBlueButton meeting emedeately or based on a startDate and optional send mails to the owner of the meeting, invitations, moderator links or notifications to users which got the room shared.
@@ -169,11 +169,13 @@ you can trigger all commands or the processing of meetings via the api. For the 
 
 to configure servers, meetings and commands via the api you have to call the rest api as follows. the structure is the same as in the config file for simplicity:
 
+```
 curl -d '{ "command": "rename_room", "server": "server_to_use", "data": { "old_room_uid": { "roomUID": "new_room_uid" } } }' -H 'Content-Type: application/json' -X POST http://localhost:8008/api/v1/commands
 curl -d '{"startDate": "2020-06-24 11:00", "id": "id_to_use", "meetingName": "test Meeting via Api", "owner": {"email": "email_of_owner", "fullName": "your name"}}' -H 'Content-Type: application/json' -X POST http://localhost:8008/api/v1/meetings
 curl -X GET http://localhost:8008/api/v1/meetings
 curl -X GET http://localhost:8008/api/v1/meetings/meetingID
 curl -d '{"command": "rename_room", "server": "server_to_use", "data": {"roomUID_to_rename": { "roomUID": "new_roomUID"}}}' -H 'Content-Type: application/json' -X POST http://localhost:8008/api/v1/commands
+```
 
 ## todo and known limitations
 ### orm based database management
