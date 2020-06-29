@@ -14,7 +14,7 @@ The application mainly features two modes:
 
 to install...
 *  please clone the repository to /user/local/bin:
-    git clone git@github.com:aau-zid/scheduLight.git /usr/local/bin/scheduLight
+    git clone https://github.com/aau-zid/scheduLight.git /usr/local/bin/scheduLight
 
 * install the python packages required... (you can use the shell script for ubuntu if you want)
     /usr/local/bin/scheduLight/python_packages_setup.sh
