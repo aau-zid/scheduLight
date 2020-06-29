@@ -12,15 +12,15 @@ PartOf=scheduLight.target
 Restart=always
 
 # Remove old containers, images and volumes
-ExecStartPre=/usr/local/bin/docker-compose -f /usr/local/bin/scheduLight/docker-compose.yml down -v
-ExecStartPre=/usr/local/bin/docker-compose -f /usr/local/bin/scheduLight/docker-compose.yml rm -v
-ExecStartPre=/usr/local/bin/docker-compose -f /usr/local/bin/scheduLight/docker-compose.yml pull
+ExecStartPre=/bin/bash -c '`which docker-compose` -f /usr/local/bin/scheduLight/docker-compose.yml down -v'
+ExecStartPre=/bin/bash -c '`which docker-compose` -f /usr/local/bin/scheduLight/docker-compose.yml rm -v'
+ExecStartPre=/bin/bash -c '`which docker-compose` -f /usr/local/bin/scheduLight/docker-compose.yml pull'
 
 # Compose up
-ExecStart=/usr/local/bin/docker-compose -f /usr/local/bin/scheduLight/docker-compose.yml up
+ExecStart=/bin/bash -c '`which docker-compose` -f /usr/local/bin/scheduLight/docker-compose.yml up'
 ExecStartPost=/usr/bin/timeout 20 sh -c 'while ! ss -t -l -n sport = :6380 | grep -q "^LISTEN.*:6380"; do sleep 1; done; sleep 2'
 # Compose down, remove containers and volumes
-ExecStop=/usr/local/bin/docker-compose -f /usr/local/bin/scheduLight/docker-compose.yml down -v
+ExecStop=/bin/bash -c '`which docker-compose` -f /usr/local/bin/scheduLight/docker-compose.yml down -v'
 
 [Install]
 WantedBy=scheduLight.target
