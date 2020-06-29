@@ -14,28 +14,43 @@ The application mainly features two modes:
 
 to install...
 *  please clone the repository to /user/local/bin:
+
+```
         git clone https://github.com/aau-zid/scheduLight.git /usr/local/bin/scheduLight
+```
 
 * install the python packages required... (you can use the shell script for ubuntu if you want)
-        /usr/local/bin/scheduLight/python_packages_setup.sh
 
-        ```
+```
+        /usr/local/bin/scheduLight/python_packages_setup.sh
+```
+
+```
         apt -y install python3-pip
         apt -y install python3-psycopg2
         pip3 install -r /usr/local/bin/scheduLight/python_packages.txt
-        ```
+```
 
 * install the systemd startup scripts...
+
+```
         /usr/local/bin/scheduLight/systemd/install.sh
+```
 
 * configure the greenlight database 
         set the database credentials in slCli.py, slCommandProcessor.py and slMeetingProcessor.py
 
 * start the processors...
+
+```
         systemctl start scheduLight
+```
 
 * to stopp...
+
+```
         systemctl stop scheduLight.target
+```
 
 ### note on redis memory usage
 you may have a look at Redis guidances on why vm.overcommit_memory should be set to 1 for it.
