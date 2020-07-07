@@ -73,6 +73,7 @@ class serverSchema(Schema):
     """ /api/servers post
 
     Parameters:
+        - id(str)
         - BBB_SECRET (str)
         - BBB_URL (url)
         - link_base (url)
@@ -84,9 +85,10 @@ class serverSchema(Schema):
         - mailServer (Str)
         - mailUser (str)
     """
+    id = fields.Str(required=True)
     BBB_SECRET = fields.Str(required=True)
-    BBB_URL = fields.Url(required=True)
-    link_base = fields.Url(required=True, error_messages={"required": "please specify a base url for greenlight."})
+    BBB_URL = fields.Url(required=True, error_messages={"required": "please specify the bbb server url e.g. https://your_bbb_server_url/bigbluebutton/api"})
+    link_base = fields.Url(required=True, error_messages={"required": "please specify a base url for greenlight. e.g. https://your_greenlight_url/b"})
     mailDebug = fields.Bool(required=False)
     send_emails = fields.Bool(required=False)
     mailTo = fields.Email(required=False)

@@ -10,6 +10,10 @@ The application mainly features two modes:
 * oneShotCommands (from api, commandLine or a yaml config file)
 * daemon mode (running in the background and whatching for changes and events to execute)
 
+## note
+this application does not feature an user interface - it is configured and used via commandline or rest api.
+It should help system administrators to not have to click arround in greenlight to manage tasks and additionally be able to automate and schedule BigBlueButton meetings.
+
 ## installation
 
 to install...
@@ -38,7 +42,7 @@ to install...
 ```
 
 * configure the greenlight database 
-        set the database credentials in slCli.py, slCommandProcessor.py and slMeetingProcessor.py
+        set the database credentials in slCli.py, slCommandProcessor.py and slMeetingProcessor.py in the argParse section.
 
 * start the processors...
 
@@ -55,6 +59,15 @@ to install...
 ### note on redis memory usage
 you may have a look at Redis guidances on why vm.overcommit_memory should be set to 1 for it.
 https://redis.io/topics/faq#background-saving-fails-with-a-fork-error-under-linux-even-if-i-have-a-lot-of-free-ram
+
+## getting started
+to understand how scheduLight works and to have a first impression, please keep the following facts in mind and follow these steps:
+
+* you need at least one BigBlueButton server configured via api or config file. The easyest way is to copy the servers block from the example config to the config.yml file and replace the data with your settings. To learn how to use the api, see the API examples section.
+
+* if you use the config file (not the api) you have to update the database with your new config. So if you changed anything in the config.yml file always execute the slReadConfig.py afterwards to read the new settings into scheduLight. If you miss this step, the new settings are not active and will not be processed. If you use the api, the changes are instant.
+
+* execute a first command via the commandline to see if it works. slCli.py -m [-s bbb_server_id] gives you information about the running meetings on your server. If you do not specify a server_id the id bbb is used. If you gave your first bbb server the id bbb you do not have to specify -s server_id for this command.
 
 ## components
 the application consists of the following components:
@@ -185,11 +198,36 @@ you can trigger all commands or the processing of meetings via the api. For the 
 to configure servers, meetings and commands via the api you have to call the rest api as follows. the structure is the same as in the config file for simplicity:
 
 ```
+curl -d '{ "id": "bbb", "BBB_URL": "https://your_server_url", "BBB_SECRET": "your_bbb_secret", "link_base": "https://your_greenlight_url/b", "mailFrom": "sender_address", "mailFromName": "sender_name", "mailServer": "server_name", "mailUser": "user_name", "mailPassword": "server_password" }' -H 'Content-Type: application/json' -X POST http://localhost:8008/api/v1/servers
 curl -d '{ "command": "rename_room", "server": "server_to_use", "data": { "old_room_uid": { "roomUID": "new_room_uid" } } }' -H 'Content-Type: application/json' -X POST http://localhost:8008/api/v1/commands
 curl -d '{"startDate": "2020-06-24 11:00", "id": "id_to_use", "meetingName": "test Meeting via Api", "owner": {"email": "email_of_owner", "fullName": "your name"}}' -H 'Content-Type: application/json' -X POST http://localhost:8008/api/v1/meetings
 curl -X GET http://localhost:8008/api/v1/meetings
 curl -X GET http://localhost:8008/api/v1/meetings/meetingID
 curl -d '{"command": "rename_room", "server": "server_to_use", "data": {"roomUID_to_rename": { "roomUID": "new_roomUID"}}}' -H 'Content-Type: application/json' -X POST http://localhost:8008/api/v1/commands
+```
+
+## trouble shooting
+if something does not work as expected the first steps to find the problems could be:
+
+* see if all processes are running 
+
+```
+systemctl
+```
+
+* check the components log output
+
+```
+systemctl -l status scheduLight-[api|commandsProcessor|...]
+```
+
+* have a look at the logFile or the syslog.
+
+* restart scheduLight
+
+```
+systemctl stop scheduLight.target
+systemctl start scheduLight
 ```
 
 ## todo and known limitations
