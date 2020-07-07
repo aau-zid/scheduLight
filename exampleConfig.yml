@@ -1,8 +1,9 @@
 # servers
 servers:
   bbb:
+    id: bbb
     BBB_SECRET: secret_of_the_server
-    BBB_URL: url_of_the_server
+    BBB_URL: url_of_bbb_server/bigbluebutton/api
     link_base: https://url_of_greenlight/b
     send_emails: true|false # default is false - no mails will be send
     mailDebug: true # to see mailcontents for debugging
